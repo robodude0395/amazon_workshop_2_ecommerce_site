@@ -1,0 +1,68 @@
+.product-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 180px;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.product-emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.product-info {
+  width: 100%;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.product-part-number {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .product-card {
+    padding: 16px;
+    min-height: 160px;
+  }
+
+  .product-emoji {
+    font-size: 40px;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-part-number {
+    font-size: 12px;
+  }
+}

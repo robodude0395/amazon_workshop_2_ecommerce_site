@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Architecture Diagram Generator",
+  "description": "Automatically generates an architecture diagram using aws-diagram MCP server when major project architecture changes are detected, saving diagrams to the 'diagrams' folder",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A major architecture file has been modified. Analyze the current project structure and generate an updated architecture diagram using the aws-diagram MCP server. Save the diagram to a 'diagrams' folder in the workspace. Include key components like services, databases, APIs, and their relationships."
+  },
+  "workspaceFolderName": "kiro-workshop-website",
+  "shortName": "architecture-diagram-generator"
+}

@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Update Docs on Source Change",
+  "description": "Monitors source files (*.py, *.ts, *.js, *.tsx, *.jsx, *.java, *.go, *.rs, *.cpp, *.c, *.h) and prompts the agent to update documentation in README or /docs folder when changes are detected.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A source file has been modified. Please review the changes and update the documentation accordingly. If a README.md exists, update it. If there's a /docs folder, update the relevant documentation files there. Focus on keeping API documentation, usage examples, and feature descriptions in sync with the code changes."
+  },
+  "workspaceFolderName": "kiro-workshop-website",
+  "shortName": "update-docs-on-change"
+}

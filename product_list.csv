@@ -1,0 +1,75 @@
+﻿Field Orderable Spare Part No,Master Spare Part No,,Part/Material Description,Quantity Required Per Unit,Define which build type ( MAPS or UPS),Frequency of Change,9'' or 10'',Variant Type( Printer or Non- Printer),Define model ( Explosive or Narcotics),,Type of Part,Skill set required to work on part,,FSE to send back part for Quality investigation,Part/Spare Returnable on Failure,OrderType
+A9044-1,A9044,Kit, CHECK VALVE & T PIECE KIT,1,UPS,,Both,Both,Both,Active,Spare,Level 2,Kit to be used  for old MK2  units( without  T-piece ) and old check valve- update in Manual,No,,Quote
+A8976-1,A8976,Non- Package Spare, CHECK VALVE,4,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,pair of 2 change in MOQ in SAP,No,,Quote
+A9067-1,A9067,Non- Package Spare, MOULDED CHARCOAL TRAP ASSY,3,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7047953,7047953,Non- Package Spare," 0.004 ON BRASS FITTING 1/8 ORIFICE,#34",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7047954,7047954,Non- Package Spare," 0.005 ON BRASS FITTING 1/8 ORIFICE,#32, #41 and #45",3,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7047955,7047955,Non- Package Spare," 0.006 ON BRASS FITTING 1/8 ORIFICE,#24",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7047956,7047956,Non- Package Spare," 0.007 ON BRASS FITTING 1/8 ORIFICE, #23",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7047504,7047504,Non- Package Spare," .0100"" ON BRASS FITTING 1/8 ORIFICE,#39",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+7048A94,7048A94,Non- Package Spare," JEWELED0.018"" 10-32THR VITON ORIFICE, #37",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 2,,No,,Quote
+A8A4017-A,A8A4017,Non- Package Spare,10.8V8.7AHLI-ION IONSCAN 600 BATTERY ,2,Both,On Failure,Both,Both,Both,Active,Spare,Level1,to be ordered in pair of 2 ,No,,Quote
+A8A4554-03,A8A4554,Non- Package Spare, FILTER ASSY,1,Both,On Failure,Both,Both,Both,Active,spare,Level1,,No,,Quote
+PCA893A-1,PCA893A,Package Spare, COMMISSIONED IS600 IMS PACKAGED SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,,Quote
+PCA4775-3,PCA4775,Package Spare, PACKAGED SWAB HEATER SUB ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,bottom desorber plate(24680) no longer available as a spare,Yes,only if its PC24775,Quote
+A8A4089CL-5,A8A4089CL,Non- Package Spare, CABLE ASSY DBD IONIZER,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,"No, if its CF, EGDN,HMTD",Quote
+7047739,7047739,Non- Package Spare,275W15V POWER SUPPLY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,case by case,Quote
+38A4530T-5,38A4530T,Non- Package Spare, APS FRONT REGEN TOWER ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,3824530T-04 to be consumed post stock exhaution latest part to be used,Yes,,Quote
+38A4359T-5,38A4359T,Non- Package Spare, APS REAR REGEN TOWER ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,3824359T-04 to be consumed post stock exhaution latest part to be used,Yes,,Quote
+PCA6700-1,PCA6700,Package Spare, FACE PLATE ASSY PKGD (10'' display),1,UPS,On Failure,10inch,Both,Both,Active,Spare,Level3,( field to order PC28968-1) if existing infield stock has old LVDS cable,Yes,,Quote
+A8A4380T-B,A8A4380T,Non- Package Spare, BUTTON / ENTER LIGHT TESTED PCB ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A4470-E,A8A4470,Non- Package Spare, USB BOARD PCB ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A438AT-C,A8A438AT,Non- Package Spare, ASSY APT / DPT TESTED PCB,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A3989CT-C,A8A3989CT,Non- Package Spare, ASSY IMS HV DRIVER COATED TESTED PCB,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,"No, if its CF, EGDN,HMTD- TBC on case by case by Hemel QC",Quote
+A4538-3,A4538,Non- Package Spare, PRINTER INTERFACE PCB ASSEMBLY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level3,,No,,Quote
+A9071-1,A9071,Non- Package Spare, OVG NBN & CHARCOAL TRAP SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,only CM,No,case by case,Quote
+A9073-1,A9073,Non- Package Spare, OVG DPM & CHARCOAL TRAP SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,only CM,No,case by case,Quote
+A907A-1,A907A,Non- Package Spare, OVG NICO & CHARCOAL TRAP SPARE,1,Both,On Failure,Both,Both,Narcotics+TSA variant,Active,Spare,Level3,only CM,No,case by case,Quote
+A478A-1,A478A,Non- Package Spare, EMPTY OVG ASSEMBLY,1,Both,On Failure,Both,Both,Explosives,Active,Spare,Level3,only CM,No,,Quote
+A9070-1,A9070,Non- Package Spare, OVG HCE & CHARCOAL TRAP SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,only CM,No,case by case,Quote
+48A4060-05,48A4060,Non- Package Spare, FRONT BEZEL,1,Both,On Failure,Both,Both,Both,Active,Spare,Level2,,No,,Quote
+A8A4694-01,A8A4694,Non- Package Spare, BACK COVER + SPRINGS ASSY,1,Both,On Failure,Both,Non-Printer,Both,Active,Spare,Level2,,No,,Quote
+38A4063-05,38A4063,Non- Package Spare, BATTERY DOOR,1,Both,On Failure,Both,Both,Both,Active,Spare,Level1,,No,,Quote
+A4593-1,A4593,Non- Package Spare, REAR COVER ASSEMBLY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level2,,No,,Quote
+A4595-1,A4595,Non- Package Spare, PRINTER COVER PLATE ASSEMBLY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level2,,No,,Quote
+48A406A-9,48A406A,Non- Package Spare, TOP COVER,1,Both,On Failure,Both,Both,Both,Active,Spare,Level2,,No,,Quote
+38A4071-05,38A4071,Non- Package Spare,"`HOUSING, INNER BACK",1,Both,On Failure,Both,Non-Printer,Both,Active,Spare,Level2,,No,,Quote
+A8A45A7-03,A8A45A7,Non- Package Spare, ASSY SPEAKER CABLE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+18A4091-06,18A4091,Non- Package Spare, PRESSURE 12VDC PUMP,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,waiting confirmation from supplier- TBC ,Quote
+18A409A-06,18A409A,Non- Package Spare, VACUUM 12VDC PUMP,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,,Quote
+7047709,7047709,Non- Package Spare, MP6 PIEZO DOUBLE DIAPHRAGM PUMP,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A4508-01,A8A4508,Non- Package Spare, CHASSIS FAN ASSY,2,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A4507-0A,A8A4507,Non- Package Spare, POWER SUPPLY FAN CABLE ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+A8A4515-01,A8A4515,Non- Package Spare, FLASH BLOWER CABLE ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Quote
+PCA8968-1,PCA8968,Package Spare, DISPLAY CABLE ASSY PACKAGED SPARE ( 10'' display),1,Both,On Failure,10inch,Both,Both,Active,Spare,Level3,,Yes,,Quote
+308A5-A,308A5,Non- Package Spare, IS600 AC CABLE ASSY FERRITE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,Awaiting Part availability in Store from Supplier,No,,Quote
+A8A4083-03,A8A4083,Non- Package Spare, CABLE ASSY-POWER,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+A8A4084-04,A8A4084,Non- Package Spare, BUTTON CABLE ASSY,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+A8A4086-03,A8A4086,Non- Package Spare, CABLE ASSY-PRE-AMP,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+A8A4088-04,A8A4088,Non- Package Spare, CABLE ASSY-APT/DPT,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+A8A4080-04,A8A4080,Non- Package Spare, CABLE ASSY - FAN,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+A4616-1,A4616,Non- Package Spare, 24V POWER LINK CABLE ASSY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level3,,No,,Order
+A4617-A,A4617,Non- Package Spare, PRINTER MAIN POWER CABLE ASSY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level3,,No,,Order
+A4618-1,A4618,Non- Package Spare, PRINTER MAIN POWER CABLE ASSY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level3,,No,,Order
+A4619-A,A4619,Non- Package Spare, PRINTER SPI COMMS CABLE ASSY,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level3,,No,,Order
+38A4055-0A,38A4055,Non- Package Spare, NAFION TUBE ASSY,1,MAPS,On Failure,Both,Both,Both,Active,Spare,Level3,,No,,Order
+48A4485-6,48A4485,Non- Package Spare, FLOW-APS ASSY MANIFOLD,1,MAPS,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,,Order
+PCA6459-1,PCA6459,Package Spare, UPS PACKAGED MANIFOLD ASSY,1,UPS,On Failure,Both,Both,Both,Active,Spare,Level3,,Yes,,Order
+A8A4081-04,A8A4081,Non- Package Spare, LCD CABLE ASSY,1,MAPS,On Failure,9inch,Both,Both,Active,Spare,Level3,,No,,Order
+A8A4087-7,A8A4087,Non- Package Spare, CABLE ASSY-HV,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+A8A4379T-B,A8A4379T,Non- Package Spare, ASSY BATTERY / CHARGER TESTED PCB,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+A8A4487-03,A8A4487,Non- Package Spare, DISPLAY ASSY WITH BRACKETS (9'' inc display),1,MAPS,On Failure,9inch,Both,Both,Active,Spare,Level 3,,Yes,,Order
+A7A31-1,A7A31,Non- Package Spare, EXHAUST TUBE IS600 MAINT. KIT,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+PC30839-1,PC30839,Package Spare,"IS600 Q7 CHIP ASSEMBLY,PACKAGED SPARE",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,4824488T-03- no longer a spare (to be used as referenced in the Visual management) FSB,Yes,,Order
+PC30840-1,PC30840,Package Spare,IS600 CONTROL PCBA ASSEMBLY PACKAGED SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,4824488T-03- no longer a spare (to be used as referenced in the Visual management),Yes,,Order
+ PC6880-3675-1, PC6880-3675,Package Spare,"mSATA, SSD, IS600,PACKAGED SPARE",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,4824488T-03- no longer a spare (to be used as referenced in the Visual management),Yes,,Order
+PCA79A4-1,PCA79A4,Package Spare,CONTROL BOARD ASSY IS600 SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,To be used on Regulatory units(CAAC)- till new board is approved,Yes,,Order
+7047754,7047754,Non- Package Spare,FAN MOUNT,4,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+31016-1,31016,Non- Package Spare,"DBD IONIZER, CABLE ASSY",1,Both,On Failure,Both,Both,Both,Launch date to be confirmed,Spare,Level 3,FSB 25-6390-DWFN to be consumed only after existing DBD ionisers are consumed(row 16) ,Yes,"No, if its CF, EGDN,HMTD",Order
+A89A4-1,A89A4,Non- Package Spare,"CABLE ASSY, SWAB DETECTOR",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,Yes,,Order
+A6670-1,A6670-1,Non- Package Spare,"VALVE ASSY, 2-WAY",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+6880-9997,6880-9997,Non- Package Spare,SPINDLE 0.12MM,1,Both,On Failure,Both,Printer,Both,Active,Spare,Level 3,,No,,Order
+A8A4546-04,A8A4546-04,Non- Package Spare,"GUIDE, FILTER",1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+1810881-A,1810881-A,Non- Package Spare,SPONGE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level 3,,No,,Order
+PCA893A-A,PCA893A,Package Spare, COMMISSIONED IS600 IMS PACKAGED SPARE,1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,To be consumed after stock consumption of PC28932-1,Yes,,Order
+A8A4501-0A ,A8A4501,Package Spare,"CABLE ASSY, MFLD VLV",1,Both,On Failure,Both,Both,Both,Active,Spare,Level3,Replacing 7047744,No,,Order
