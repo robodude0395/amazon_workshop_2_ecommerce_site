@@ -146,7 +146,50 @@ pm2 startup
 # Copy and run the command that PM2 outputs
 ```
 
-### 3. Frontend Deployment
+### 3. Chatbot Service Deployment
+
+```bash
+# Navigate to chatbot directory
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/chatbot
+
+# Install Python 3.9+ if not already installed
+python3 --version  # Should be 3.9 or higher
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+nano .env  # Edit with your AWS credentials and backend URL
+
+# Example .env configuration:
+# AWS_ACCESS_KEY_ID=your_aws_access_key
+# AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+# AWS_REGION=us-east-1
+# BACKEND_API_URL=http://localhost:5000
+# CHATBOT_PORT=8000
+# LOG_LEVEL=INFO
+
+# Kill any processes using port 8000
+sudo lsof -ti:8000 | xargs sudo kill -9 2>/dev/null || true
+
+# Start chatbot with PM2
+pm2 start main.py --name smiths-chatbot --interpreter python3
+
+# Save PM2 process list
+pm2 save
+```
+
+**Important:** The chatbot requires:
+- AWS credentials with Bedrock access
+- Backend API running on port 5000
+- Python 3.9+ with virtual environment
+
+### 4. Frontend Deployment
 
 ```bash
 # Navigate to frontend directory
@@ -205,10 +248,15 @@ sudo systemctl reload nginx
 - **Port 80**: HTTP access for remote clients
 - **Frontend**: Serves React build files from `/var/www/smiths-detection/frontend/build`
 - **API Proxy**: Routes `/api/*` requests to Node.js backend on port 5000
-- **Health Check**: Proxies `/health` endpoint for monitoring
+- **Chatbot Proxy**: Routes `/api/chat` requests to Python chatbot on port 8000
+- **Health Checks**:
+  - `/health` → Backend health check
+  - `/chatbot/health` → Chatbot health check
 - **Compression**: Gzip enabled for static assets
 - **Logging**: Access and error logs in `/var/log/nginx/`
 - **Error Pages**: Custom 502/503/504 error handling
+
+**Important:** The `/api/chat` location must come BEFORE `/api/` in the nginx config to match correctly.
 
 ### 5. Verify Deployment
 
@@ -217,28 +265,39 @@ sudo systemctl reload nginx
 pm2 list
 curl http://localhost:5000/health
 
+# Check chatbot is running
+curl http://localhost:8000/health
+
 # Check frontend is accessible
 curl http://localhost/
 
 # Check API proxy is working
 curl http://localhost/api/products
 
+# Check chatbot proxy is working
+curl -X POST http://localhost/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"session_id":"test-123","message":"Hello"}'
+
 # View logs if needed
 pm2 logs smiths-backend
+pm2 logs smiths-chatbot
 sudo tail -f /var/log/nginx/smiths-detection-access.log
 sudo tail -f /var/log/nginx/smiths-detection-error.log
 ```
 
 **Expected Results:**
-- `pm2 list` shows smiths-backend as "online"
-- Health check returns: `{"status":"ok","message":"Server is running"}`
+- `pm2 list` shows both smiths-backend and smiths-chatbot as "online"
+- Backend health check returns: `{"status":"ok","message":"Server is running"}`
+- Chatbot health check returns: `{"status":"healthy","version":"1.0.0",...}`
 - Frontend returns HTML with React app
 - API returns JSON with product list
+- Chatbot returns conversational response
 
 **Access Your Site:**
 - Find your EC2 public IP in AWS Console
 - Open browser to `http://your-ec2-public-ip`
-- Site should load with product catalog
+- Site should load with product catalog and chat interface
 
 ### 6. Troubleshooting
 
@@ -252,6 +311,26 @@ sudo lsof -ti:5000 | xargs sudo kill -9
 
 # Check backend logs
 pm2 logs smiths-backend --lines 50
+```
+
+**Chatbot won't start:**
+```bash
+# Check if port 8000 is in use
+sudo lsof -ti:8000
+
+# Kill any conflicting processes
+sudo lsof -ti:8000 | xargs sudo kill -9
+
+# Check chatbot logs
+pm2 logs smiths-chatbot --lines 50
+
+# Verify AWS credentials
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/chatbot
+cat .env | grep AWS
+
+# Test AWS Bedrock access
+source .venv/bin/activate
+python -c "import boto3; client = boto3.client('bedrock-runtime', region_name='us-east-1'); print('AWS connection OK')"
 ```
 
 **Database connection errors:**
@@ -309,6 +388,23 @@ sudo lsof -ti:5000 | xargs sudo kill -9
 
 # Restart backend
 pm2 restart smiths-backend
+```
+
+**Chatbot returns 503 errors:**
+```bash
+# Check chatbot health
+curl http://localhost:8000/health
+
+# Common issues:
+# 1. AWS credentials not configured
+# 2. Backend API not reachable
+# 3. Python dependencies not installed
+
+# Verify backend is accessible from chatbot
+curl http://localhost:5000/api/products
+
+# Check chatbot logs for specific errors
+pm2 logs smiths-chatbot --lines 100
 ```
 
 ## Production Environment Variables
