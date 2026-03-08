@@ -356,13 +356,27 @@ def process_message(agent: Agent, session: Session, user_message: str) -> str:
 
         # Generate response using the agent
         # The agent will automatically use conversation history if we pass it
-        response = agent(user_message)
+        result = agent(user_message)
+
+        # Extract text from AgentResult object
+        # The Strands agent returns an AgentResult, we need to get the text content
+        if hasattr(result, 'content'):
+            response_text = result.content
+        elif hasattr(result, 'text'):
+            response_text = result.text
+        elif hasattr(result, 'message'):
+            response_text = result.message
+        elif isinstance(result, str):
+            response_text = result
+        else:
+            # Fallback: convert to string
+            response_text = str(result)
 
         # Add assistant response to session history
-        session.add_message("assistant", response)
+        session.add_message("assistant", response_text)
 
         logger.info(f"Processed message for session {session.session_id}")
-        return response
+        return response_text
 
     except Exception as e:
         logger.error(f"Error processing message: {e}", extra={
