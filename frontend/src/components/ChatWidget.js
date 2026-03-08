@@ -39,31 +39,57 @@ const ChatWidget = () => {
         timestamp: new Date().toISOString()
       }]);
     }
-  }, [isOpen, messageserMessage]);
+  }, [isOpen, messages.length]);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+    setError(null);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!inputValue.trim() || isLoading) {
+      return;
+    }
+
+    const userMessage = inputValue.trim();
+    setInputValue('');
+    setError(null);
+
+    // Add user message to chat
+    const newUserMessage = {
+      role: 'user',
+      content: userMessage,
+      timestamp: new Date().toISOString()
+    };
+    setMessages(prev => [...prev, newUserMessage]);
 
     // Send to chatbot API
     setIsLoading(true);
-    try {
-      const response = await sendChatMessage(sessionId, userMessage);
 
-      // Add assistant response to chat
-      const assistantMessage = {
-        role: 'assistant',
-        content: response.response,
-        timestamp: response.timestamp
-      };
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (err) {
-      console.error('Chat error:', err);
-      setError('Sorry, I\'m having trouble connecting. Please try again.');
+    sendChatMessage(sessionId, userMessage)
+      .then(response => {
+        // Add assistant response to chat
+        const assistantMessage = {
+          role: 'assistant',
+          content: response.response,
+          timestamp: response.timestamp
+        };
+        setMessages(prev => [...prev, assistantMessage]);
+      })
+      .catch(err => {
+        console.error('Chat error:', err);
+        setError('Sorry, I\'m having trouble connecting. Please try again.');
 
-      // Remove the user message if the request failed
-      setMessages(prev => prev.slice(0, -1));
-      // Restore the input
-      setInputValue(userMessage);
-    } finally {
-      setIsLoading(false);
-    }
+        // Remove the user message if the request failed
+        setMessages(prev => prev.slice(0, -1));
+        // Restore the input
+        setInputValue(userMessage);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const formatTime = (timestamp) => {
