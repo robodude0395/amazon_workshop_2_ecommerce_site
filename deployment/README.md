@@ -155,11 +155,16 @@ cd ~/Desktop/amazon_workshop_2_ecommerce_site/frontend
 # Install dependencies
 npm install
 
-# Configure production API URL
-echo "REACT_APP_API_URL=/api" > .env.production
+# Verify production environment configuration
+cat .env.production
+# Should show: REACT_APP_API_URL=/api
+# This tells the frontend to use relative URLs through the Nginx proxy
 
 # Build production bundle
 npm run build
+
+# Verify the build doesn't reference localhost:5000
+grep -r "localhost:5000" build/ && echo "ERROR: Build has localhost references!" || echo "✓ Build is correct"
 
 # Create web root directory
 sudo mkdir -p /var/www/smiths-detection/frontend
@@ -171,6 +176,8 @@ sudo cp -r build /var/www/smiths-detection/frontend/
 sudo chown -R www-data:www-data /var/www/smiths-detection/
 sudo chmod -R 755 /var/www/smiths-detection/
 ```
+
+**Important:** The `.env.production` file must have `REACT_APP_API_URL=/api` before building. This is already configured in the repository, but verify it if you encounter connection issues.
 
 ### 4. Nginx Configuration
 

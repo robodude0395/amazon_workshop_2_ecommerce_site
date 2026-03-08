@@ -1,0 +1,22 @@
+# Shopping Assistant Chatbot Dependencies
+
+# Web framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+
+# AI/ML
+strands-agents-sdk==0.1.0
+boto3==1.34.0
+
+# HTTP client
+requests==2.31.0
+
+# Configuration
+python-dotenv==1.0.0
+
+# Data validation
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Testing
+pytest==7.4.3

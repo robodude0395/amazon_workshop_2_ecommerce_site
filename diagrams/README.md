@@ -76,7 +76,7 @@ This folder contains visual representations of the Smiths Detection E-Commerce P
 
 ---
 
-### 5. Testing Architecture
+### 6. Testing Architecture
 **File:** `testing-architecture.png`
 
 **Description:** Complete testing infrastructure showing:
@@ -88,6 +88,70 @@ This folder contains visual representations of the Smiths Detection E-Commerce P
 - Code under test
 
 **Use this for:** Understanding test organization and coverage.
+
+---
+
+### 7. Complete System Architecture (Updated)
+**File:** `complete_system_architecture_updated.png`
+
+**Description:** Updated full system architecture including the new Python chatbot service:
+- End users and client layer
+- React SPA frontend (Port 3000)
+- Nginx reverse proxy (Port 80)
+- Node.js backend API (Port 5000)
+- Python chatbot service (Port 8000)
+- MySQL database
+- AWS Bedrock Nova Pro integration
+
+**Use this for:** Understanding the complete system with chatbot integration.
+
+---
+
+### 8. Detailed Architecture with Components
+**File:** `detailed_architecture_with_components.png`
+
+**Description:** Comprehensive view showing internal components of each service:
+- React components (Pages, Components, API Client)
+- Node.js services (Product Service, Cart Service, CSV Parser)
+- Python chatbot components (Session Manager, Strands Agent, Backend Client)
+- Data layer (MySQL, CSV file)
+- AWS Bedrock integration
+
+**Use this for:** Understanding internal component structure and relationships.
+
+---
+
+### 9. Chatbot Data Flow
+**File:** `chatbot_data_flow.png`
+
+**Description:** Step-by-step flow for chatbot interactions:
+1. User sends chat message
+2. Frontend POST to /api/chat
+3. Session management
+4. Strands agent processes message
+5. Nova Pro LLM interprets intent
+6. Agent calls tools (search products, add to cart, etc.)
+7. HTTP client calls backend API
+8. Backend queries MySQL
+9. Response flows back through layers
+10. User receives conversational response
+
+**Use this for:** Understanding chatbot request processing and tool execution.
+
+---
+
+### 10. Deployment Architecture
+**File:** `deployment_architecture.png`
+
+**Description:** Development vs Production deployment models:
+- **Development:** Direct connections between services on different ports
+- **Production:** Nginx reverse proxy routing all traffic
+  - `/` → Static React files
+  - `/api/*` → Node.js backend
+  - `/api/chat` → Python chatbot
+- AWS Bedrock integration for both environments
+
+**Use this for:** Understanding deployment configurations and environment differences.
 
 ---
 
@@ -116,19 +180,25 @@ This folder contains visual representations of the Smiths Detection E-Commerce P
 
 ## Architecture Highlights
 
-### Current Implementation (35% Complete)
+### Current Implementation (60% Complete)
 
 **✅ Completed:**
 - Database schema with 2 tables
 - 3 backend services (ProductService, CartService, CSV Parser)
-- 4 API endpoints (GET products, GET product by ID, POST cart, GET cart)
+- 6 API endpoints (Products: GET all, GET by ID; Cart: POST, GET, PUT, DELETE)
 - 89 tests with 100% service coverage
 - CSV import with 74 products
 - Connection pooling and error handling
+- **Python chatbot service with Strands Agents SDK**
+- **AWS Bedrock Nova Pro integration**
+- **FastAPI server with /api/chat and /health endpoints**
+- **Session management for conversation context**
+- **Backend API client with retry logic**
+- **Comprehensive chatbot test suite**
 
 **🔄 In Progress:**
-- 2 remaining cart endpoints (PUT, DELETE)
 - Frontend React components
+- Chat UI integration
 - API client integration
 
 **📋 Planned:**
@@ -186,6 +256,6 @@ Source code for diagram generation is available in the project repository.
 
 ---
 
-**Last Updated:** March 7, 2026
-**Diagram Count:** 5
-**Total Components Visualized:** 50+
+**Last Updated:** March 8, 2026
+**Diagram Count:** 9
+**Total Components Visualized:** 80+

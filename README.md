@@ -4,7 +4,7 @@ A web-based e-commerce platform for browsing and purchasing detection equipment 
 
 ## 🚀 Implementation Status
 
-**Backend: 60% Complete** | **Frontend: 10% Complete** | **Overall: 35% Complete**
+**Backend: 60% Complete** | **Frontend: 10% Complete** | **Chatbot: 100% Complete** | **Overall: 40% Complete**
 
 ### ✅ Completed Components
 - Database schema with products and cart_items tables
@@ -15,6 +15,11 @@ A web-based e-commerce platform for browsing and purchasing detection equipment 
 - Cart API endpoints (POST /api/cart, GET /api/cart)
 - Automatic product import on server startup
 - Comprehensive error handling and logging
+- **Shopping Assistant Chatbot Service** (Python/Strands SDK/AWS Bedrock Nova Pro)
+  - Natural language product search and recommendations
+  - Conversational cart management
+  - Session-based conversation context
+  - Independent microservice deployment
 
 ### 🔄 In Progress
 - Remaining cart API endpoints (PUT, DELETE)
@@ -24,6 +29,7 @@ A web-based e-commerce platform for browsing and purchasing detection equipment 
 
 ### 📋 Planned
 - Frontend pages (Home, Product Detail, Cart)
+- Frontend chatbot popup interface
 - Navigation and routing
 - Deployment configuration
 - End-to-end testing
@@ -32,6 +38,7 @@ A web-based e-commerce platform for browsing and purchasing detection equipment 
 
 - **Frontend**: React 18 SPA with React Router
 - **Backend**: Node.js/Express REST API
+- **Chatbot**: Python/FastAPI with Strands Agents SDK and AWS Bedrock Nova Pro
 - **Database**: MySQL 8.0+
 - **Deployment**: Single server with Nginx reverse proxy
 
@@ -69,6 +76,18 @@ See [diagrams/README.md](./diagrams/README.md) for detailed descriptions of each
 │   ├── server.js              # ✅ Main server entry point
 │   ├── package.json           # Backend dependencies
 │   └── .env                   # Environment configuration
+├── chatbot/                    # ✅ Python chatbot service
+│   ├── config.py              # ✅ Configuration management
+│   ├── logger.py              # ✅ Structured logging
+│   ├── models.py              # ✅ Data models
+│   ├── backend_client.py      # ✅ Backend API client
+│   ├── agent.py               # ✅ Strands agent logic
+│   ├── server.py              # ✅ FastAPI application
+│   ├── main.py                # ✅ Entry point
+│   ├── start.sh               # ✅ Startup script
+│   ├── requirements.txt       # Python dependencies
+│   ├── .env.example           # Environment template
+│   └── README.md              # Chatbot documentation
 ├── frontend/                   # React frontend SPA
 │   ├── src/                   # ⏳ React source code (in progress)
 │   ├── public/                # Static assets
@@ -110,7 +129,23 @@ npm start
 
 Backend will run on http://localhost:5000
 
-### 3. Frontend Setup
+### 3. Chatbot Service Setup (Optional)
+
+```bash
+cd chatbot
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with AWS credentials and backend URL
+./start.sh
+```
+
+Chatbot service will run on http://localhost:8000
+
+See `chatbot/README.md` for detailed setup instructions.
+
+### 4. Frontend Setup
 
 ```bash
 cd frontend
@@ -124,12 +159,31 @@ Frontend will run on http://localhost:3000
 
 ### Environment Variables
 
-Both backend and frontend require environment configuration:
+Backend, chatbot, and frontend require environment configuration:
 
 - **Backend**: Copy `backend/.env.example` to `backend/.env` and configure database credentials
+- **Chatbot**: Copy `chatbot/.env.example` to `chatbot/.env` and configure AWS credentials and backend URL
 - **Frontend**: Uses `.env.development` for local development (already configured)
 
 See [Environment Setup Guide](./docs/ENVIRONMENT-SETUP.md) for detailed configuration instructions.
+
+### Chatbot Environment Variables
+
+The chatbot service requires the following environment variables:
+
+**Required:**
+- `AWS_ACCESS_KEY_ID`: AWS access key for Bedrock authentication
+- `AWS_SECRET_ACCESS_KEY`: AWS secret key for Bedrock authentication
+- `BACKEND_API_URL`: Base URL of Node.js backend (e.g., http://localhost:5000)
+
+**Optional:**
+- `AWS_SESSION_TOKEN`: AWS session token for temporary credentials
+- `AWS_REGION`: AWS region (default: us-east-1)
+- `CHATBOT_PORT`: Service port (default: 8000)
+- `LOG_LEVEL`: Logging level (default: INFO)
+- `CORS_ORIGINS`: Allowed CORS origins (default: http://localhost:3000)
+
+See `chatbot/.env.example` for complete list.
 
 ## Deployment
 
@@ -137,6 +191,19 @@ For production deployment instructions, see:
 - [Deployment Guide](./docs/DEPLOYMENT.md) - Complete deployment walkthrough
 - [Deployment Checklist](./docs/DEPLOYMENT-CHECKLIST.md) - Step-by-step checklist
 - [Environment Setup](./docs/ENVIRONMENT-SETUP.md) - Environment configuration details
+
+### Chatbot Service Deployment
+
+The chatbot service runs independently on port 8000 and can be deployed on the same server as the backend:
+
+1. Install Python 3.9+ and create virtual environment
+2. Install dependencies: `pip install -r chatbot/requirements.txt`
+3. Configure environment variables in `chatbot/.env`
+4. Run service: `cd chatbot && ./start.sh`
+
+For production, use a process manager (systemd/supervisor) and configure Nginx to proxy `/api/chat` and `/health` endpoints to port 8000.
+
+See [Chatbot README](./chatbot/README.md) for detailed deployment instructions including systemd configuration and Nginx setup.
 
 ## Testing
 
@@ -188,7 +255,12 @@ This script validates:
 - `PUT /api/cart/:id` - Update item quantity ⏳
 - `DELETE /api/cart/:id` - Remove item from cart ⏳
 
+### Chatbot API ✅
+- `POST /api/chat` - Send message to chatbot and receive response
+- `GET /health` - Check chatbot service health status
+
 See [API Documentation](./docs/API.md) for detailed endpoint specifications.
+See [Chatbot Documentation](./chatbot/README.md) for chatbot API details.
 
 ## Features
 
@@ -198,12 +270,19 @@ See [API Documentation](./docs/API.md) for detailed endpoint specifications.
 - Add/update/remove cart items
 - Persistent cart storage
 - CSV-based product import
+- **AI-powered shopping assistant chatbot**
+  - Natural language product search
+  - Conversational recommendations
+  - Cart management through chat
+  - Session-based conversation context
 
 ## Requirements
 
 - Node.js 16+
 - MySQL 8.0+
 - npm or yarn
+- Python 3.9+ (for chatbot service)
+- AWS account with Bedrock access (for chatbot service)
 
 ## License
 
