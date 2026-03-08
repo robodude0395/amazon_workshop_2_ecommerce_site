@@ -1,61 +1,186 @@
 # Deployment Guide
 
+This guide covers both local nginx setup (for testing production configuration) and production deployment.
+
 ## Prerequisites
 
-- Ubuntu/Debian server or EC2 instance
 - MySQL 8.0+ installed and running
 - Node.js 16+ installed
 - Nginx installed
 
-## Deployment Steps
+## Local Nginx Setup (macOS)
+
+For testing the production nginx configuration locally:
+
+### 1. Install Nginx
+
+```bash
+# Install via Homebrew
+brew install nginx
+
+# Verify installation
+nginx -v
+```
+
+### 2. Build Frontend
+
+```bash
+cd frontend
+npm install
+npm run build
+```
+
+### 3. Configure Local Paths
+
+Update the nginx configuration to use your local project path:
+
+```bash
+# Edit deployment/nginx.conf
+# Change: root /var/www/smiths-detection/frontend/build;
+# To: root /absolute/path/to/your/project/frontend/build;
+```
+
+### 4. Set Up Nginx Configuration
+
+```bash
+# Copy configuration to nginx
+sudo cp deployment/nginx.conf /usr/local/etc/nginx/servers/smiths-detection.conf
+
+# Test configuration
+sudo nginx -t
+
+# Start or reload nginx
+brew services start nginx
+# OR if already running:
+brew services restart nginx
+```
+
+### 5. Start Backend
+
+```bash
+cd backend
+npm install
+npm start  # Runs on port 5000
+```
+
+### 6. Access Application
+
+Open browser to `http://localhost` (nginx serves on port 8080 by default on macOS, or port 80 if configured)
+
+**Note**: If port 80 requires sudo, you can modify the nginx config to use port 8080 instead:
+```nginx
+listen 8080;
+```
+
+### 7. Stop Nginx
+
+```bash
+brew services stop nginx
+```
+
+## Production Deployment
+
+For Ubuntu/Debian servers or EC2 instances:
+
+### Prerequisites
+
+Before starting, ensure:
+- EC2 instance is running Ubuntu 20.04+ or Debian 10+
+- Security group allows inbound traffic on port 80 (HTTP)
+- MySQL 8.0+ is installed and running
+- Node.js 16+ is installed
+- Nginx is installed
 
 ### 1. Database Setup
 
 ```bash
-# Create database and tables
-mysql -u root -p < ../database/schema.sql
+# Connect to MySQL and create database
+mysql -u root -p
+
+# In MySQL prompt, run:
+CREATE DATABASE IF NOT EXISTS smiths_detection_ecommerce;
+EXIT;
+
+# Initialize schema
+cd ~/Desktop/amazon_workshop_2_ecommerce_site
+mysql -u root -p smiths_detection_ecommerce < database/schema.sql
 ```
 
 ### 2. Backend Deployment
 
 ```bash
 # Navigate to backend directory
-cd backend
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/backend
 
 # Install dependencies
 npm install --production
 
 # Configure environment
 cp .env.example .env
-nano .env  # Edit with production values
+nano .env  # Edit with your database credentials
 
-# Start backend (using PM2 for process management)
-npm install -g pm2
+# Example .env configuration:
+# DB_HOST=localhost
+# DB_PORT=3306
+# DB_USER=root
+# DB_PASSWORD=your_mysql_password
+# DB_NAME=smiths_detection_ecommerce
+# PORT=5000
+# NODE_ENV=production
+# CSV_FILE_PATH=../product_list.csv
+
+# Install PM2 globally for process management
+sudo npm install -g pm2
+
+# Kill any processes using port 5000
+sudo lsof -ti:5000 | xargs sudo kill -9 2>/dev/null || true
+
+# Start backend with PM2
 pm2 start server.js --name smiths-backend
+
+# Save PM2 process list
 pm2 save
-pm2 startup  # Follow instructions to enable startup on boot
+
+# Enable PM2 to start on system boot
+pm2 startup
+# Copy and run the command that PM2 outputs
 ```
 
 ### 3. Frontend Deployment
 
 ```bash
 # Navigate to frontend directory
-cd frontend
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/frontend
 
 # Install dependencies
 npm install
 
+# Configure production API URL
+echo "REACT_APP_API_URL=/api" > .env.production
+
 # Build production bundle
 npm run build
 
-# Copy build to web root
+# Create web root directory
 sudo mkdir -p /var/www/smiths-detection/frontend
-sudo cp -r build/* /var/www/smiths-detection/frontend/
+
+# Copy build to web root
+sudo cp -r build /var/www/smiths-detection/frontend/
+
+# Set proper permissions
+sudo chown -R www-data:www-data /var/www/smiths-detection/
+sudo chmod -R 755 /var/www/smiths-detection/
 ```
 
 ### 4. Nginx Configuration
 
 ```bash
+# Navigate to deployment directory
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/deployment
+
+# Disable default nginx site
+sudo rm /etc/nginx/sites-enabled/default
+
 # Copy nginx configuration
 sudo cp nginx.conf /etc/nginx/sites-available/smiths-detection
 
@@ -82,68 +207,233 @@ sudo systemctl reload nginx
 
 ```bash
 # Check backend is running
+pm2 list
 curl http://localhost:5000/health
 
 # Check frontend is accessible
 curl http://localhost/
 
-# Check API proxy
+# Check API proxy is working
 curl http://localhost/api/products
+
+# View logs if needed
+pm2 logs smiths-backend
+sudo tail -f /var/log/nginx/smiths-detection-access.log
+sudo tail -f /var/log/nginx/smiths-detection-error.log
+```
+
+**Expected Results:**
+- `pm2 list` shows smiths-backend as "online"
+- Health check returns: `{"status":"ok","message":"Server is running"}`
+- Frontend returns HTML with React app
+- API returns JSON with product list
+
+**Access Your Site:**
+- Find your EC2 public IP in AWS Console
+- Open browser to `http://your-ec2-public-ip`
+- Site should load with product catalog
+
+### 6. Troubleshooting
+
+**Backend won't start:**
+```bash
+# Check if port 5000 is in use
+sudo lsof -ti:5000
+
+# Kill any conflicting processes
+sudo lsof -ti:5000 | xargs sudo kill -9
+
+# Check backend logs
+pm2 logs smiths-backend --lines 50
+```
+
+**Database connection errors:**
+```bash
+# Verify MySQL is running
+sudo systemctl status mysql
+
+# Test database connection
+mysql -u root -p smiths_detection_ecommerce -e "SELECT COUNT(*) FROM products;"
+
+# Check .env file has correct credentials
+cat ~/Desktop/amazon_workshop_2_ecommerce_site/backend/.env
+```
+
+**Frontend shows but products don't load:**
+```bash
+# Check browser console for errors (F12 in browser)
+# Common issue: API URL misconfigured
+
+# Verify .env.production has correct API URL
+cat ~/Desktop/amazon_workshop_2_ecommerce_site/frontend/.env.production
+# Should contain: REACT_APP_API_URL=/api
+
+# Rebuild frontend if needed
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/frontend
+npm run build
+sudo cp -r build /var/www/smiths-detection/frontend/
+sudo systemctl reload nginx
+```
+
+**Nginx errors:**
+```bash
+# Check nginx configuration
+sudo nginx -t
+
+# View error logs
+sudo tail -50 /var/log/nginx/smiths-detection-error.log
+
+# Verify permissions
+ls -la /var/www/smiths-detection/frontend/build/
+# Should be owned by www-data
+
+# Fix permissions if needed
+sudo chown -R www-data:www-data /var/www/smiths-detection/
+sudo chmod -R 755 /var/www/smiths-detection/
+```
+
+**Port 5000 already in use:**
+```bash
+# Find what's using the port
+sudo lsof -ti:5000
+
+# Kill the process
+sudo lsof -ti:5000 | xargs sudo kill -9
+
+# Restart backend
+pm2 restart smiths-backend
 ```
 
 ## Production Environment Variables
 
 Update `backend/.env` with production values:
 
-```
+```env
+# Database Configuration
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=smiths_app
-DB_PASSWORD=<secure_password>
+DB_USER=root
+DB_PASSWORD=your_secure_password
 DB_NAME=smiths_detection_ecommerce
 
+# Server Configuration
 PORT=5000
 NODE_ENV=production
 
-CSV_FILE_PATH=/path/to/product_list.csv
+# Data Source
+CSV_FILE_PATH=../product_list.csv
 ```
+
+**Important:** Never commit `.env` files to version control. The `.env.example` file serves as a template.
 
 ## Security Considerations
 
-1. **Database**: Create dedicated MySQL user with limited privileges
-2. **Firewall**: Only expose port 80 (and 443 for HTTPS)
-3. **SSL/TLS**: Configure HTTPS with Let's Encrypt
-4. **Environment**: Never commit `.env` files to version control
-5. **Updates**: Keep dependencies updated for security patches
+1. **Database Security**
+   - Create a dedicated MySQL user instead of using root:
+   ```bash
+   mysql -u root -p
+   CREATE USER 'smiths_app'@'localhost' IDENTIFIED BY 'secure_password_here';
+   GRANT ALL PRIVILEGES ON smiths_detection_ecommerce.* TO 'smiths_app'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+   ```
+   - Update `backend/.env` with the new credentials
 
-## Monitoring
+2. **Firewall Configuration**
+   - Only expose port 80 (HTTP) and 22 (SSH) in EC2 security group
+   - Port 5000 (backend) and 3306 (MySQL) should NOT be publicly accessible
+
+3. **SSL/TLS (HTTPS)**
+   - For production, configure HTTPS with Let's Encrypt:
+   ```bash
+   sudo apt install certbot python3-certbot-nginx
+   sudo certbot --nginx -d your-domain.com
+   ```
+
+4. **Environment Variables**
+   - Never commit `.env` files to git
+   - Use strong passwords for database
+   - Restrict file permissions: `chmod 600 backend/.env`
+
+5. **System Updates**
+   - Keep dependencies updated: `npm audit fix`
+   - Update system packages: `sudo apt update && sudo apt upgrade`
+
+## Monitoring and Maintenance
+
+### Process Management
 
 ```bash
-# View backend logs
+# View all PM2 processes
+pm2 list
+
+# View backend logs (live)
 pm2 logs smiths-backend
 
-# View nginx logs
-sudo tail -f /var/log/nginx/access.log
-sudo tail -f /var/log/nginx/error.log
+# View last 100 lines of logs
+pm2 logs smiths-backend --lines 100
 
-# Monitor backend process
-pm2 status
+# Restart backend
+pm2 restart smiths-backend
+
+# Stop backend
+pm2 stop smiths-backend
+
+# View process details
+pm2 show smiths-backend
+
+# Monitor CPU/memory usage
 pm2 monit
 ```
 
-## Troubleshooting
+### Nginx Logs
 
-### Backend won't start
-- Check database connection in `.env`
-- Verify MySQL is running: `sudo systemctl status mysql`
-- Check logs: `pm2 logs smiths-backend`
+```bash
+# View access logs (live)
+sudo tail -f /var/log/nginx/smiths-detection-access.log
 
-### Frontend shows blank page
-- Verify build was successful
-- Check nginx configuration: `sudo nginx -t`
-- Check file permissions in `/var/www/smiths-detection/frontend/`
+# View error logs (live)
+sudo tail -f /var/log/nginx/smiths-detection-error.log
 
-### API requests fail
-- Verify backend is running: `curl http://localhost:5000/health`
-- Check nginx proxy configuration
-- Review nginx error logs
+# View last 50 lines
+sudo tail -50 /var/log/nginx/smiths-detection-access.log
+```
+
+### System Health
+
+```bash
+# Check disk space
+df -h
+
+# Check memory usage
+free -h
+
+# Check MySQL status
+sudo systemctl status mysql
+
+# Check Nginx status
+sudo systemctl status nginx
+
+# Check backend health endpoint
+curl http://localhost:5000/health
+```
+
+### Updating the Application
+
+**Backend updates:**
+```bash
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/backend
+git pull  # or copy new files
+npm install
+pm2 restart smiths-backend
+```
+
+**Frontend updates:**
+```bash
+cd ~/Desktop/amazon_workshop_2_ecommerce_site/frontend
+git pull  # or copy new files
+npm install
+npm run build
+sudo cp -r build /var/www/smiths-detection/frontend/
+sudo systemctl reload nginx
+```
