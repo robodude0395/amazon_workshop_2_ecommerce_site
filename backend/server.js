@@ -33,6 +33,9 @@ app.use('/api/products', productsRouter);
 const cartRouter = require('./routes/cart');
 app.use('/api/cart', cartRouter);
 
+const chatRouter = require('./routes/chat');
+app.use('/api/chat', chatRouter);
+
 // Error handler middleware (must be last)
 app.use((err, req, res, next) => {
   console.error('[ERROR]', {
