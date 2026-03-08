@@ -29,6 +29,11 @@ async function apiRequest(endpoint, options = {}) {
   try {
     const response = await fetch(url, config);
 
+    // Handle 204 No Content responses (no body to parse)
+    if (response.status === 204) {
+      return null;
+    }
+
     // Parse JSON response
     const data = await response.json();
 
@@ -47,6 +52,11 @@ async function apiRequest(endpoint, options = {}) {
     // Handle network errors
     if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
       throw new Error('Unable to connect to server. Please check your connection.');
+    }
+
+    // Handle JSON parsing errors for 204 responses
+    if (error.name === 'SyntaxError' && error.message.includes('JSON')) {
+      return null;
     }
 
     // Re-throw API errors with user-friendly messages
